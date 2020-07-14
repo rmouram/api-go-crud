@@ -8,8 +8,8 @@ Api feita em go com frontend basico em html e javascript
   - [X] delete
 
 - [ ] Frontend basico:
- - [X] Cadastro
- - [ ] Editar
- - [X] Listar
- - [ ] Buscar
- - [ ] Deletar
+  - [X] Cadastro
+  - [ ] Editar
+  - [X] Listar
+  - [ ] Buscar
+  - [ ] Deletar
