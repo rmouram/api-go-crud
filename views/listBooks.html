@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listgem de Livros</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script type="text/javascript">
+        const api = axios.create({
+            baseURL: 'http://localhost:3000'
+        })
+    </script>
+</head>
+<body>
+
+    <div class="pages">
+        <div class="listBooks">
+            <header>
+                <h1>Lista de Livros</h1>
+                <a href="../index.html">Home</a>
+            </header>
+            <form method="GET" onsubmit="getBooks(event)">
+                <button type="submit">Listar</button>
+                <ul id="list"></ul>
+            </form>   
+        </div>
+    </div>
+
+    <script>
+        async function getBooks(event){
+            event.preventDefault()
+
+            const response = await api.get('/books')
+            const list = document.querySelector('#list')
+           
+            list.innerHTML = ''
+
+            response.data.forEach(element => {
+                const strBooks = '<li>'+element.title+'</li>'
+                list.innerHTML = list.innerHTML + strBooks
+            });
+        }
+
+
+    </script>
+</body>
+</html>

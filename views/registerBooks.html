@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script type="text/javascript">
+        const api = axios.create({
+            baseURL: 'http://localhost:3000'
+        })
+    </script>
+</head>
+<body>
+    <div class="pages">
+        <div class="register">
+            <header>
+                <h1>Cadastro de livros</h1>
+                <a href="../index.html">Home</a>
+            </header>
+            <form method="POST" onsubmit="registerBooks(event)">
+                <input type="text" name="title" placeholder="Título" onfocus="this.value=''">
+                <input type="text" name="author" placeholder="Autor" onfocus="this.value=''">
+                <input type="reset" name="clean" value="Limpar">
+                <button type="submit">Enviar</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+
+        async function registerBooks(event){
+            event.preventDefault()
+
+            const titleBook = event.target.title.value
+            const authorBook = event.target.author.value
+            console.log(titleBook, authorBook)
+
+            const data = {title: titleBook, author: authorBook}
+            console.log(data)
+            await api.post("/books", data)
+
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api basico</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script type="text/javascript">
+        const api = axios.create({
+            baseURL: 'http://localhost:80'
+        })
+    </script>
+</head>
+
+    <div class="pages">
+        <div class="home">
+            <header>
+                <h1>Bem-vindo a Livraria</h1>
+            </header>
+            <a class="pages" href="./views/registerBooks.html"><button class="button" type="submit">Cadastrar</button></a>
+            <a href="./views/listBooks.html"><button class="button" type="submit">Listar</button></a>
+            <button class="button" type="submit">Buscar</button>
+            <button class="button" type="submit">Deletar</button>
+
+        </div>
+    </div>
+    
+</body>
+</html>
