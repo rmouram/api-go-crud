@@ -38,6 +38,55 @@ var Books []Book = []Book{
 	},
 }
 
+func updateBooks(w http.ResponseWriter, r *http.Request) {
+	urlSplit := strings.Split(r.URL.Path, "/")
+	id, erro := strconv.Atoi(urlSplit[2])
+
+	if erro != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	//pegando o indice do livro a ser modificado
+	indiceBook := -1
+	for indice, book := range Books {
+		if book.Id == id {
+			indiceBook = indice
+			break
+		}
+	}
+
+	// colocando o corpo da requisicao na variavel body
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// codificando de json para struct o body
+	var updatedBook Book
+	errorJSON := json.Unmarshal(body, &updatedBook)
+
+	//o livro modificado mantem o id
+	updatedBook.Id = id
+
+	if errorJSON != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if indiceBook < 0 {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	Books[indiceBook] = updatedBook
+
+	json.NewEncoder(w).Encode(updatedBook)
+
+}
+
 func deleteBooks(w http.ResponseWriter, r *http.Request) {
 	enableCors(w)
 
@@ -68,7 +117,6 @@ func searchBooks(w http.ResponseWriter, r *http.Request) {
 	urlSplit := strings.Split(r.URL.Path, "/")
 
 	if len(urlSplit) >= 4 && urlSplit[3] != "" {
-		fmt.Println("com barra pode")
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -135,6 +183,8 @@ func routeBooks(w http.ResponseWriter, r *http.Request) {
 			searchBooks(w, r)
 		} else if r.Method == "DELETE" {
 			deleteBooks(w, r)
+		} else if r.Method == "PUT" {
+			updateBooks(w, r)
 		}
 	} else {
 		w.WriteHeader(http.StatusServiceUnavailable)
