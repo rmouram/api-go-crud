@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Livro</title>
+    <title>Deletar Livros</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
     <script type="text/javascript">
         const api = axios.create({
@@ -14,34 +14,25 @@
 <body>
     <div>
         <header>
-            <h1>Busca de Livros</h1>
+            <h1>Deletar Livros</h1>
             <a href="../index.html">Home</a>
         </header>
-        <form method="GET" onsubmit="searchBooks(event)">
+        <form onsubmit="deleteBooks(event)">
             <input type="text" name="book" placeholder="Buscar pelo título do livro">
             <button type="submit">Enviar</button>
             <input type="reset" name="clean" value="Limpar">
-            <ul id="list"></ul>
         </form>
     </div>
 
     <script>
 
-        async function searchBooks(event){
+        async function deleteBooks(event){
             event.preventDefault()
 
             let titleBook = event.target.book.value
             const response = await api.get("/books/"+titleBook)
-            
-            const list = document.querySelector('#list')
-            
-            titleBook = response.data.title
-            const authorBook = response.data.author
-
-            list.innerHTML = ''
-
-            let strBook = '<li>'+'Titulo: '+titleBook+' Autor: '+authorBook+'</li>'
-            list.innerHTML = strBook
+            await api.delete("/books/"+response.data.id)
+            alert(`${response.data.title} foi deletado`)
         }
 
     </script>
