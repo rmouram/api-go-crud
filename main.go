@@ -26,11 +26,11 @@ var Books []Book = []Book{
 	{
 		Id:     1,
 		Author: "Jose de Alencar",
-		Title:  "Iracema",
+		Title:  "O guarani",
 	}, {
 		Id:     2,
 		Author: "Jose de Alencar",
-		Title:  "O guarani",
+		Title:  "Iracema",
 	}, {
 		Id:     3,
 		Author: "Jose Saramago",
@@ -60,6 +60,7 @@ func deleteBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchBooks(w http.ResponseWriter, r *http.Request) {
+
 	enableCors(w)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -72,13 +73,17 @@ func searchBooks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var id, _ = strconv.Atoi(urlSplit[2])
+	//var id, _ = strconv.Atoi(urlSplit[2])
+	var title = strings.ToLower(urlSplit[2])
+	var encontrou = 0
 	for _, livro := range Books {
-		if livro.Id == id {
+		if strings.ToLower(livro.Title) == title {
+			encontrou = 1
 			json.NewEncoder(w).Encode(livro)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
 		}
+	}
+	if encontrou == 0 {
+		w.WriteHeader(http.StatusNotFound)
 	}
 }
 
@@ -138,7 +143,6 @@ func routeBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 // as proximas 3 funções são para habilitar o CORS
-
 func enableCors(w http.ResponseWriter) {
 	(w).Header().Set("Access-Control-Allow-Origin", "*")
 }
